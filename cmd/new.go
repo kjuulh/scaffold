@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 
+	"git.front.kjuulh.io/kjuulh/scaffold/internal/fetcher"
 	"git.front.kjuulh.io/kjuulh/scaffold/internal/templates"
 	"github.com/spf13/cobra"
 )
@@ -14,10 +15,15 @@ func getScaffoldCommands(registryPath *string) ([]*cobra.Command, error) {
 	var (
 		ctx             = context.Background()
 		ui              = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
+		fetcher         = fetcher.NewFetcher()
 		templateIndexer = templates.NewTemplateIndexer()
 		templateLoader  = templates.NewTemplateLoader()
 		fileWriter      = templates.NewFileWriter().WithPromptOverride(promptOverrideFile)
 	)
+
+	if !fetcher.Available(registryPath) {
+		return nil, nil
+	}
 
 	templateFiles, err := templateIndexer.Index(ctx, *registryPath, ui)
 	if err != nil {

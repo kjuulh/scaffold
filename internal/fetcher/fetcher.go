@@ -19,15 +19,29 @@ func NewFetcher() *Fetcher {
 	return &Fetcher{}
 }
 
-const readWriteExec = 0o644
+const readWriteExec = 0o744
 
 const githubProject = "kjuulh/scaffold"
 
 var (
-	scaffoldFolder = os.ExpandEnv("$HOME/.scaffold")
-	scaffoldClone  = path.Join(scaffoldFolder, "upstream")
-	scaffoldCache  = path.Join(scaffoldFolder, "scaffold.updates.json")
+	scaffoldFolder   = os.ExpandEnv("$HOME/.scaffold")
+	scaffoldClone    = path.Join(scaffoldFolder, "upstream")
+	scaffoldRegistry = path.Join(scaffoldClone, "registry")
+	scaffoldCache    = path.Join(scaffoldFolder, "scaffold.updates.json")
 )
+
+func (f *Fetcher) Available(registryPath *string) bool {
+	if *registryPath == "" {
+		if _, err := os.Stat(scaffoldClone); err != nil {
+			return false
+		}
+
+		return true
+
+	}
+
+	return false
+}
 
 func (f *Fetcher) CloneRepository(ctx context.Context, registryPath *string, ui *slog.Logger) error {
 	if err := os.MkdirAll(scaffoldFolder, readWriteExec); err != nil {
@@ -35,9 +49,11 @@ func (f *Fetcher) CloneRepository(ctx context.Context, registryPath *string, ui 
 	}
 
 	if *registryPath == "" {
+		// update the registry path as it is shared
+		*registryPath = scaffoldRegistry
 		if _, err := os.Stat(scaffoldClone); err != nil {
 			if !errors.Is(err, os.ErrNotExist) {
-				return fmt.Errorf("failed to find the upstream folder: %w", err)
+				return fmt.Errorf("failed to find the upstream folder: %s, %w", scaffoldClone, err)
 			}
 
 			ui.Info("cloning upstream templates")

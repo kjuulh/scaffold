@@ -53,7 +53,7 @@ func (t *TemplateIndexer) Index(ctx context.Context, scaffoldRegistryFolder stri
 
 	templateDirEntries, err := os.ReadDir(scaffoldRegistryFolder)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read templates dir: %w", err)
+		return nil, fmt.Errorf("failed to read templates dir: %s, %w", scaffoldRegistryFolder, err)
 	}
 
 	var (
