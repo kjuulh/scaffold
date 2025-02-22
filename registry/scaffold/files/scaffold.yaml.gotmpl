@@ -1,0 +1,8 @@
+name: {{ ReplaceAll .Input.name "-" "_" }}
+default:
+  path: internal/app/
+input:
+  package:
+    type: string
+    description: "Which go pkg to use for the generated file"
+    default: "app"

@@ -1,0 +1,18 @@
+package {{ ReplaceAll .Input.name "-" "" }}
+
+import (
+	"testing"
+
+	"git.front.kjuulh.io/kjuulh/scaffold/internal/tests"
+)
+
+func TestScaffold(t *testing.T) {
+	tests.
+		Test(t, "{{ ReplaceAll .Input.name "-" ""  }}").
+		ScaffoldDefaultTest("default").
+		ScaffoldTest("scaffold package with name",
+			func(fixture *tests.ScaffoldFixture) {
+				fixture.WithVariable("package", "somename")
+			},
+		)
+}

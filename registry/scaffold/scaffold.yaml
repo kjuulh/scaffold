@@ -1,0 +1,8 @@
+name: scaffold
+default:
+  path: >
+    registry/{{ ReplaceAll .Input.name "-" "_" }}
+input:
+  name:
+    type: string
+    description: "which name to use for the scaffold"
