@@ -34,6 +34,8 @@ func (f *Fetcher) Available(registryPath *string) bool {
 			return false
 		}
 
+		*registryPath = scaffoldRegistry
+
 		return true
 
 	}
