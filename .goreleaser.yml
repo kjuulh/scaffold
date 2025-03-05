@@ -25,3 +25,30 @@ release:
 
 changelog:
   disable: true
+
+brews:
+  -
+    name: scaffold
+    url_template: "https://github.com/kjuulh/scaffold/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    commit_author:
+      name: goreleaserbot
+      email: contact+github@kjuulh.io
+
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    directory: Formula
+    caveats: "export SCAFFOLD_REGISTRY to a git url pointing to your scaffold fork"
+    homepage: "https://github.com/kjuulh/scaffold"
+    description: "Scaffold files in a solid testable and reliable manner"
+    license: "MIT"
+    dependencies:
+      - name: git
+      - name: gh
+
+
+    # Repository to push the generated files to.
+    repository:
+      owner: kjuulh
+      name: homebrew-taps
+      branch: main
+      token: "{{ .Env.PERSONAL_AUTH_TOKEN }}"
+
