@@ -4,6 +4,20 @@ Scaffold is a cli that allows Developer to easily scaffold (create or update fil
 
 ![demo](assets/demo.gif)
 
+## Install
+
+### Brew
+
+```bash
+brew install kjuulh/tap/scaffold 
+```
+
+### Go
+
+```bash
+go install github.com/kjuulh/scaffold@latest 
+```
+
 ## Usage
 
 ```bash
@@ -46,3 +60,11 @@ A template consists of the following files:
 - `testdata/your_test_here/actual && expected`: contains tests to match the output of the scaffolder. This is especially useful to test a variety of input, for example using the defaults, vs. getting other info from the user.
 
 To make your plugin available, simply create a pr on this repository, merge and your users should have it available shortly
+
+### Bonus testing
+
+![test demo](./assets/test-demo.gif)
+
+You'll notice that there is a _test file, as well as a testdata folder.
+
+These are not mandatory, but allows you to test a variety of inputs for your template, the tests are snapshot based tests. In the testdata folder you'll see an actual folder as well as expected. To accept the output of a test, simply delete the expected if found, and rename the actual to expected.
