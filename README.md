@@ -2,10 +2,15 @@
 
 Scaffold is a cli that allows Developer to easily scaffold (create or update files) according to best practices.
 
+![demo](assets/demo.gif)
+
 ## Usage
 
 ```bash
- scaffold
+# set this in your .zshrc or .bashrc file
+export SCAFFOLD_REGISTRY=https://github.com/kjuulh/scaffold.git # you can use your own templates as well, see the Develop your own template section
+
+scaffold
 > Pick a template
 > Fill required information for the template
 > Profit
@@ -23,10 +28,12 @@ Scaffold allows a wide variety of formatting options, such as template defined i
 
 Templates are maintained in the `registry` folder. This is automatically kept up-to-date by the `scaffold`, in the folder you will see all the available templates.
 
+You can of course use the default scaffold maintained here, but to create your own, simply fork the [example registry](https://github.com/kjuulh/scaffold-example-registry).
+
 To develop your own
 
 ```
-go run ./main.go --registry registry scaffold --name your_scaffold_here
+./scaffold.sh scaffold --name <your new template name here>
 ```
 
 Scaffold will now have created a sample scaffold in the `registry/your_scaffold_here` folder along with tests.

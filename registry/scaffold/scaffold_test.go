@@ -3,7 +3,7 @@ package externalhttp_test
 import (
 	"testing"
 
-	"github.com/kjuulh/scaffold/internal/tests"
+	"github.com/kjuulh/scaffold/tests"
 )
 
 func TestScaffold(t *testing.T) {
