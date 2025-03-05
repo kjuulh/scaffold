@@ -21,8 +21,6 @@ func NewFetcher() *Fetcher {
 
 const readWriteExec = 0o744
 
-const githubProject = "kjuulh/scaffold"
-
 var (
 	scaffoldFolder   = os.ExpandEnv("$HOME/.scaffold")
 	scaffoldClone    = path.Join(scaffoldFolder, "upstream")
@@ -96,7 +94,12 @@ func (f *Fetcher) UpdateUpstream(ctx context.Context) error {
 }
 
 func cloneUpstream(ctx context.Context) error {
-	cmd := exec.CommandContext(ctx, "coffee", "repo", "clone", githubProject, scaffoldClone)
+	githubProject := os.Getenv("SCAFFOLD_REGISTRY")
+	if githubProject == "" {
+		return errors.New("failed to find SCAFFOLD_REGISTRY set the environment variable to a fork of https://github.com/kjuulh/scaffold-registry")
+	}
+
+	cmd := exec.CommandContext(ctx, "git", "clone", githubProject, scaffoldClone)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
