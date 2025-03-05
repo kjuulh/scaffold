@@ -3,7 +3,7 @@ package somename
 import (
 	"testing"
 
-	"git.front.kjuulh.io/kjuulh/scaffold/internal/tests"
+	"github.com/kjuulh/scaffold/internal/tests"
 )
 
 func TestScaffold(t *testing.T) {

@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"git.front.kjuulh.io/kjuulh/scaffold/internal/templates"
+	"github.com/kjuulh/scaffold/internal/templates"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

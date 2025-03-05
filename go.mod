@@ -1,4 +1,4 @@
-module git.front.kjuulh.io/kjuulh/scaffold
+module github.com/kjuulh/scaffold
 
 go 1.22
 
@@ -10,8 +10,8 @@ require (
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.10.0
-	git.front.kjuulh.io/kjuulh/scaffoldhttp v1.9.0
-	git.front.kjuulh.io/kjuulh/scaffoldui-logger v0.1.0
+	github.com/kjuulh/scaffoldhttp v1.9.0
+	github.com/kjuulh/scaffoldui-logger v0.1.0
 	golang.org/x/sync v0.11.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -58,8 +58,8 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	git.front.kjuulh.io/kjuulh/scaffoldcorrelation v1.0.1 // indirect
-	git.front.kjuulh.io/kjuulh/scaffoldzlog v1.3.2 // indirect
+	github.com/kjuulh/scaffoldcorrelation v1.0.1 // indirect
+	github.com/kjuulh/scaffoldzlog v1.3.2 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.57.0 // indirect
 	go.opentelemetry.io/otel v1.32.0 // indirect
 	go.opentelemetry.io/otel/metric v1.32.0 // indirect

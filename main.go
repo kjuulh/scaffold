@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"git.front.kjuulh.io/kjuulh/scaffold/cmd"
+	"github.com/kjuulh/scaffold/cmd"
 )
 
 func main() {

@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://git.front.kjuulh.io/kjuulh/cuddle/raw/branch/main/schemas/base.json
+# yaml-language-server: $schema=https://github.com/kjuulh/cuddle/raw/branch/main/schemas/base.json
 
-base: "git@git.front.kjuulh.io:kjuulh/cuddle-empty-plan.git"
+base: "git@github.com:kjuulh/cuddle-empty-plan.git"
 
 vars:
   service: "scaffold"
@@ -12,5 +12,5 @@ please:
     repository: "scaffold"
     branch: main
   settings:
-    api_url: https://git.front.kjuulh.io  
+    api_url: https://github.com  
 

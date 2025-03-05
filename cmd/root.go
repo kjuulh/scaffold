@@ -16,8 +16,8 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"git.front.kjuulh.io/kjuulh/scaffold/internal/fetcher"
-	"git.front.kjuulh.io/kjuulh/scaffold/internal/templates"
+	"github.com/kjuulh/scaffold/internal/fetcher"
+	"github.com/kjuulh/scaffold/internal/templates"
 )
 
 func Execute() error {

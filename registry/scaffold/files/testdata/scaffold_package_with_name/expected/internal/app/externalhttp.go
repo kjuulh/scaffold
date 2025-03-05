@@ -1,6 +1,6 @@
 package somename
 
-import "git.front.kjuulh.io/kjuulh/scaffoldhttp"
+import "github.com/kjuulh/scaffoldhttp"
 
 func externalHttpServer() func() (*http.ExternalServer, error) {
 	return func() (*http.ExternalServer, error) {
