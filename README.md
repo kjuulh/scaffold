@@ -1,70 +1,73 @@
 # Scaffold
 
-Scaffold is a cli that allows Developer to easily scaffold (create or update files) according to best practices.
+Scaffold is a CLI tool that helps developers easily create or update files according to best practices.
 
 ![demo](assets/demo.gif)
 
-## Install
+## Installation
 
-### Brew
-
+### Via Homebrew
 ```bash
-brew install kjuulh/tap/scaffold 
+brew install kjuulh/tap/scaffold
 ```
 
-### Go
-
+### Via Go
 ```bash
-go install github.com/kjuulh/scaffold@latest 
+go install github.com/kjuulh/scaffold@latest
 ```
 
 ## Usage
 
+Basic usage:
 ```bash
-# set this in your .zshrc or .bashrc file
-export SCAFFOLD_REGISTRY=https://github.com/kjuulh/scaffold.git # you can use your own templates as well, see the Develop your own template section
+# Set this in your .zshrc or .bashrc file
+export SCAFFOLD_REGISTRY=https://github.com/kjuulh/scaffold.git # Optional: use your own templates
 
 scaffold
-> Pick a template
-> Fill required information for the template
-> Profit
+# Follow the interactive prompts:
+# 1. Pick a template
+# 2. Fill required information
+# 3. Profit
 ```
 
-Optionally if you know what you're looking for:
+Direct template selection:
 
 ```bash
- scaffold externalhttp # --package app as an example
+scaffold externalhttp # Optional flags: --package app
 ```
 
-Scaffold allows a wide variety of formatting options, such as template defined inputs, where the files should be placed, if they should be overwritten or not.
+Scaffold offers various formatting options, including template-defined inputs, customizable file placement, and overwrite controls.
 
-## Develop your own template
+## Creating Your Own Templates
 
-Templates are maintained in the `registry` folder. This is automatically kept up-to-date by the `scaffold`, in the folder you will see all the available templates.
+Templates are maintained in the `registry` folder, which is automatically kept up-to-date by `scaffold`.
 
-You can of course use the default scaffold maintained here, but to create your own, simply fork the [example registry](https://github.com/kjuulh/scaffold-example-registry).
+To create your own templates:
 
-To develop your own
+1. Fork the [example registry](https://github.com/kjuulh/scaffold-example-registry)
+2. Create a new template:
+   ```bash
+   ./scaffold.sh scaffold --name <your-template-name>
+   ```
 
-```
-./scaffold.sh scaffold --name <your new template name here>
-```
+### Template Structure
 
-Scaffold will now have created a sample scaffold in the `registry/your_scaffold_here` folder along with tests.
+A template consists of:
 
-A template consists of the following files:
+- `scaffold.yaml`: Controls template behavior and inputs
+- `scaffold_test.go`: Optional but recommended tests
+- `files/*.gotmpl`: Template files (using `.gotmpl` extension, especially for Go files)
+- `testdata/your_test_here/actual` and `expected`: Test output validation
 
-- `scaffold.yaml`: Controls how the scaffold is supposed to work, which inputs it has, etc.
-- `scaffold_test.go`: Optional, but recommended tests which runs a set of input on the template and checks the output
-- `files/*.gotmpl`: Files to be scaffolded, it is recommended to provide a suffix of `.gotmpl` to the files, especially for golang files, which might otherwise mess with the project. Each file is templated using go templates, and is put in the path specified by the user, or via. the default path from the scaffold file. Files can also be put in directories, and the folder structure will be preserved.
-- `testdata/your_test_here/actual && expected`: contains tests to match the output of the scaffolder. This is especially useful to test a variety of input, for example using the defaults, vs. getting other info from the user.
+Templates use Go's templating system, and the folder structure is preserved when scaffolding.
 
-To make your plugin available, simply create a pr on this repository, merge and your users should have it available shortly
-
-### Bonus testing
+### Testing Templates
 
 ![test demo](./assets/test-demo.gif)
 
-You'll notice that there is a _test file, as well as a testdata folder.
+The testing system is snapshot-based:
+- Test various inputs against your templates
+- Compare actual output with expected output
+- To accept test changes: delete the "expected" folder if it exists, and rename "actual" to "expected"
 
-These are not mandatory, but allows you to test a variety of inputs for your template, the tests are snapshot based tests. In the testdata folder you'll see an actual folder as well as expected. To accept the output of a test, simply delete the expected if found, and rename the actual to expected.
+To make your template available to others, create a PR to the main repository.
