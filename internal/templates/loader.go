@@ -136,6 +136,10 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 
 		fileDir := path.Dir(file.RelPath)
 		fileName := strings.TrimSuffix(path.Base(file.RelPath), ".gotmpl")
+		filePath := path.Join(fileDir, fileName)
+
+		//slog.Info("file renames", "renames", template.File.Files)
+
 		if fileConfig, ok := template.File.Files[strings.TrimSuffix(file.RelPath, ".gotmpl")]; ok && fileConfig.Rename != "" {
 			l.logger.Debug("templating file", "path", file.RelPath, "rename", fileConfig.Rename)
 
@@ -147,24 +151,27 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 			type RenameContext struct {
 				Template
 				OriginalFileName string
+				OriginalFilePath string
 			}
 
 			output := bytes.NewBufferString("")
 			if err := renameTmpl.Execute(output, RenameContext{
 				Template:         *template,
 				OriginalFileName: fileName,
+				OriginalFilePath: file.RelPath,
 			}); err != nil {
 				return nil, fmt.Errorf("failed to template rename: %s, %w", file.RelPath, err)
 			}
 
-			fileName = strings.TrimSpace(output.String())
+			filePath = strings.TrimSpace(output.String())
+
 		} else {
 			l.logger.Debug("using raw file path", "path", file.RelPath)
 		}
 
 		templatedFiles = append(templatedFiles, TemplatedFile{
 			Content:         output.Bytes(),
-			DestinationPath: path.Join(scaffoldDest, fileDir, fileName),
+			DestinationPath: path.Join(scaffoldDest, filePath),
 		})
 	}
 
