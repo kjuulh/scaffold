@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"os"
 	"path"
 	"path/filepath"
@@ -17,10 +18,12 @@ import (
 )
 
 // TemplateLoader reads a templates files and runs their respective templating on them.
-type TemplateLoader struct{}
+type TemplateLoader struct {
+	logger *slog.Logger
+}
 
-func NewTemplateLoader() *TemplateLoader {
-	return &TemplateLoader{}
+func NewTemplateLoader(logger *slog.Logger) *TemplateLoader {
+	return &TemplateLoader{logger}
 }
 
 type File struct {
@@ -134,6 +137,8 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 		fileDir := path.Dir(file.RelPath)
 		fileName := strings.TrimSuffix(path.Base(file.RelPath), ".gotmpl")
 		if fileConfig, ok := template.File.Files[strings.TrimSuffix(file.RelPath, ".gotmpl")]; ok && fileConfig.Rename != "" {
+			l.logger.Debug("templating file", "path", file.RelPath, "rename", fileConfig.Rename)
+
 			renameTmpl, err := gotmpl.New(file.RelPath).Funcs(funcs).Parse(fileConfig.Rename)
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse rename for: %s in scaffold.yaml: %w", file.RelPath, err)
@@ -153,6 +158,8 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 			}
 
 			fileName = strings.TrimSpace(output.String())
+		} else {
+			l.logger.Debug("using raw file path", "path", file.RelPath)
 		}
 
 		templatedFiles = append(templatedFiles, TemplatedFile{

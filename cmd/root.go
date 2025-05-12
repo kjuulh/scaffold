@@ -53,7 +53,7 @@ func runScaffold(ctx context.Context, registryPath *string) error {
 	ui := slog.New(slog.NewTextHandler(os.Stderr, nil))
 	fetcher := fetcher.NewFetcher()
 	templateIndexer := templates.NewTemplateIndexer()
-	templateLoader := templates.NewTemplateLoader()
+	templateLoader := templates.NewTemplateLoader(ui)
 	fileWriter := templates.NewFileWriter().WithPromptOverride(promptOverrideFile)
 
 	if err := fetcher.CloneRepository(ctx, registryPath, ui); err != nil {

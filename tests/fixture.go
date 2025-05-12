@@ -71,9 +71,9 @@ func (f *TestFixture) ScaffoldTest(testName string, input func(fixture *Scaffold
 			ctx := t.Context()
 
 			indexer := templates.NewTemplateIndexer()
-			loader := templates.NewTemplateLoader()
-			writer := templates.NewFileWriter()
 			ui := slog.New(slog.NewTextHandler(os.Stderr, nil))
+			loader := templates.NewTemplateLoader(ui)
+			writer := templates.NewFileWriter()
 
 			templateFiles, err := indexer.Index(ctx, "../", ui)
 			require.NoError(t, err)

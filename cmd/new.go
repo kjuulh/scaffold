@@ -17,7 +17,7 @@ func getScaffoldCommands(registryPath *string) ([]*cobra.Command, error) {
 		ui              = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
 		fetcher         = fetcher.NewFetcher()
 		templateIndexer = templates.NewTemplateIndexer()
-		templateLoader  = templates.NewTemplateLoader()
+		templateLoader  = templates.NewTemplateLoader(ui)
 		fileWriter      = templates.NewFileWriter().WithPromptOverride(promptOverrideFile)
 	)
 
