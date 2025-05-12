@@ -14,6 +14,7 @@ import (
 	"github.com/kjuulh/scaffold/internal/templates"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"maps"
 )
 
 // ScaffoldFixture provides an api on top of the scaffold templater, this is opposed to calling the cli
@@ -71,7 +72,7 @@ func (f *TestFixture) ScaffoldTest(testName string, input func(fixture *Scaffold
 			ctx := t.Context()
 
 			indexer := templates.NewTemplateIndexer()
-			ui := slog.New(slog.NewTextHandler(os.Stderr, nil))
+			ui := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 			loader := templates.NewTemplateLoader(ui)
 			writer := templates.NewFileWriter()
 
@@ -88,9 +89,7 @@ func (f *TestFixture) ScaffoldTest(testName string, input func(fixture *Scaffold
 				template.Input[input] = inputSpec.Default
 			}
 
-			for key, val := range fixture.vars {
-				template.Input[key] = val
-			}
+			maps.Copy(template.Input, fixture.vars)
 
 			templatePath, err := templates.TemplatePath(template)
 			require.NoError(t, err)

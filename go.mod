@@ -1,8 +1,8 @@
 module github.com/kjuulh/scaffold
 
-go 1.22
+go 1.24
 
-toolchain go1.23.1
+toolchain go1.24.1
 
 require (
 	github.com/charmbracelet/huh v0.6.0
