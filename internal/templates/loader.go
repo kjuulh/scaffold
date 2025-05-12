@@ -12,6 +12,7 @@ import (
 	"sync"
 	gotmpl "text/template"
 
+	"github.com/iancoleman/strcase"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -29,9 +30,10 @@ type File struct {
 }
 
 var funcs = gotmpl.FuncMap{
-	"ReplaceAll": strings.ReplaceAll,
-	"ToLower":    strings.ToLower,
-	"ToUpper":    strings.ToUpper,
+	"ReplaceAll":   strings.ReplaceAll,
+	"ToLower":      strings.ToLower,
+	"ToUpper":      strings.ToUpper,
+	"ToPascalCase": strcase.ToCamel,
 }
 
 // TemplatePath formats the template file path using go templates, this is useful for programmatically changing the output string using go tmpls
