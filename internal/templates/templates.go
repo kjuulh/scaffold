@@ -42,10 +42,10 @@ type TemplateFileConfig struct {
 }
 
 type TemplateFile struct {
-	Name    string          `yaml:"name"`
-	Default TemplateDefault `yaml:"default"`
-	Input   TemplateInputs  `yaml:"input"`
-	Files   map[string]TemplateFileConfig
+	Name    string                        `yaml:"name"`
+	Default TemplateDefault               `yaml:"default"`
+	Input   TemplateInputs                `yaml:"input"`
+	Files   map[string]TemplateFileConfig `yaml:"files"`
 }
 
 func (t *TemplateIndexer) Index(ctx context.Context, scaffoldRegistryFolder string, ui *slog.Logger) ([]Template, error) {
