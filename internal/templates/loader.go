@@ -158,7 +158,7 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 			if err := renameTmpl.Execute(output, RenameContext{
 				Template:         *template,
 				OriginalFileName: fileName,
-				OriginalFilePath: file.RelPath,
+				OriginalFilePath: strings.TrimSuffix(file.RelPath, ".gotmpl"),
 			}); err != nil {
 				return nil, fmt.Errorf("failed to template rename: %s, %w", file.RelPath, err)
 			}
