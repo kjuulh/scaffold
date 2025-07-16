@@ -140,11 +140,14 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 			New(file.RelPath).
 			Funcs(funcs).
 			Funcs(gotmpl.FuncMap{
-				"WriteModeFile": func() {
+				"WriteModeFile": func() string {
 					writeMode = TemplatedFileWriteModeFile
+					// Needs a single return value at least, empty string to not pollute output
+					return ""
 				},
-				"WriteModeAppend": func() {
+				"WriteModeAppend": func() string {
 					writeMode = TemplatedFileWriteModeAppend
+					return ""
 				},
 			}).
 			Parse(string(file.content))
