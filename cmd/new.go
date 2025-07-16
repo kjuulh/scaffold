@@ -11,11 +11,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func getScaffoldCommands(registryPath *string) ([]*cobra.Command, error) {
+func getScaffoldCommands(registryPath *string, forceCacheUpdate *bool) ([]*cobra.Command, error) {
 	var (
 		ctx             = context.Background()
 		ui              = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
-		fetcher         = fetcher.NewFetcher()
+		fetcher         = fetcher.NewFetcher(*forceCacheUpdate)
 		templateIndexer = templates.NewTemplateIndexer()
 		templateLoader  = templates.NewTemplateLoader(ui)
 		fileWriter      = templates.NewFileWriter().WithPromptOverride(promptOverrideFile)

@@ -13,9 +13,11 @@ import (
 )
 
 // Fetcher allows pulling from an upstream scaffold registry. This is hard coded to the lunarway/scaffold registry, it can also be provided by a path which in that case, will not do anything
-type Fetcher struct{}
+type Fetcher struct {
+	ignoreCache bool
+}
 
-func NewFetcher() *Fetcher {
+func NewFetcher(ignoreCache bool) *Fetcher {
 	return &Fetcher{}
 }
 
@@ -66,7 +68,7 @@ func (f *Fetcher) CloneRepository(ctx context.Context, registryPath *string, ui 
 			lastUpdated := time.Unix(lastUpdatedUnix, 0)
 
 			// Cache for 7 days
-			if lastUpdated.Before(now.Add(-time.Hour * 24 * 7)) {
+			if lastUpdated.Before(now.Add(-time.Hour*24*7)) || f.ignoreCache {
 				ui.Info("update templates folder")
 				if err := f.UpdateUpstream(ctx); err != nil {
 					return fmt.Errorf("failed to update upstream scaffold folder: %w", err)

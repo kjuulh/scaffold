@@ -169,7 +169,6 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 			}
 
 			filePath = strings.TrimSpace(output.String())
-
 		} else {
 			l.logger.Debug("using raw file path", "path", file.RelPath)
 		}

@@ -21,13 +21,16 @@ import (
 )
 
 func Execute() error {
-	var registryPath string
+	var (
+		registryPath     string
+		forceCacheUpdate bool
+	)
 
 	rootCmd := &cobra.Command{
 		Use:   "scaffold",
 		Short: "pick a template, and scaffold a piece of code",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := runScaffold(cmd.Context(), &registryPath); err != nil {
+			if err := runScaffold(cmd.Context(), &registryPath, &forceCacheUpdate); err != nil {
 				fmt.Printf("failed to run scaffold: %s\n", err.Error())
 				os.Exit(1)
 			}
@@ -35,9 +38,10 @@ func Execute() error {
 	}
 
 	rootCmd.PersistentFlags().StringVar(&registryPath, "registry", "", "where to get the registry from, defaults to upstream repository")
+	rootCmd.PersistentFlags().BoolVar(&forceCacheUpdate, "force-cache-update", false, "should we force an update of the cache?")
 	_ = rootCmd.ParseFlags(os.Args)
 
-	subCommands, err := getScaffoldCommands(&registryPath)
+	subCommands, err := getScaffoldCommands(&registryPath, &forceCacheUpdate)
 	if err != nil {
 		fmt.Printf("failed to setup subcommands: %s\n", err.Error())
 		os.Exit(1)
@@ -49,9 +53,9 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-func runScaffold(ctx context.Context, registryPath *string) error {
+func runScaffold(ctx context.Context, registryPath *string, forceCacheUpdate *bool) error {
 	ui := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	fetcher := fetcher.NewFetcher()
+	fetcher := fetcher.NewFetcher(*forceCacheUpdate)
 	templateIndexer := templates.NewTemplateIndexer()
 	templateLoader := templates.NewTemplateLoader(ui)
 	fileWriter := templates.NewFileWriter().WithPromptOverride(promptOverrideFile)
