@@ -12,6 +12,7 @@ import (
 
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/golang-cz/devslog"
 	"github.com/ktr0731/go-fuzzyfinder"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -39,7 +40,9 @@ func Execute() error {
 
 	rootCmd.PersistentFlags().StringVar(&registryPath, "registry", "", "where to get the registry from, defaults to upstream repository")
 	rootCmd.PersistentFlags().BoolVar(&forceCacheUpdate, "force-cache-update", false, "should we force an update of the cache?")
-	_ = rootCmd.ParseFlags(os.Args)
+	if err := rootCmd.ParseFlags(os.Args); err != nil {
+		return err
+	}
 
 	subCommands, err := getScaffoldCommands(&registryPath, &forceCacheUpdate)
 	if err != nil {
@@ -54,7 +57,11 @@ func Execute() error {
 }
 
 func runScaffold(ctx context.Context, registryPath *string, forceCacheUpdate *bool) error {
-	ui := slog.New(slog.NewTextHandler(os.Stderr, nil))
+	ui := slog.New(devslog.NewHandler(os.Stderr, &devslog.Options{
+		HandlerOptions: &slog.HandlerOptions{
+			Level: slog.LevelInfo,
+		},
+	}))
 	fetcher := fetcher.NewFetcher(*forceCacheUpdate)
 	templateIndexer := templates.NewTemplateIndexer()
 	templateLoader := templates.NewTemplateLoader(ui)

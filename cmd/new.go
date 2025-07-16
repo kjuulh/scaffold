@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/golang-cz/devslog"
 	"github.com/kjuulh/scaffold/internal/fetcher"
 	"github.com/kjuulh/scaffold/internal/templates"
 	"github.com/spf13/cobra"
@@ -14,18 +15,23 @@ import (
 func getScaffoldCommands(registryPath *string, forceCacheUpdate *bool) ([]*cobra.Command, error) {
 	var (
 		ctx             = context.Background()
-		ui              = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{}))
+		ui              = slog.New(devslog.NewHandler(os.Stderr, &devslog.Options{HandlerOptions: &slog.HandlerOptions{Level: slog.LevelInfo}}))
 		fetcher         = fetcher.NewFetcher(*forceCacheUpdate)
 		templateIndexer = templates.NewTemplateIndexer()
 		templateLoader  = templates.NewTemplateLoader(ui)
 		fileWriter      = templates.NewFileWriter().WithPromptOverride(promptOverrideFile)
 	)
 
-	if !fetcher.Available(registryPath) {
+	// if err := fetcher.CloneRepository(ctx, registryPath, ui); err != nil {
+	// 	return nil, fmt.Errorf("failed to clone repository: %w", err)
+	// }
+
+	localRegistryPath, available := fetcher.Available(registryPath)
+	if !available {
 		return nil, nil
 	}
 
-	templateFiles, err := templateIndexer.Index(ctx, *registryPath, ui)
+	templateFiles, err := templateIndexer.Index(ctx, localRegistryPath, ui)
 	if err != nil {
 		return nil, fmt.Errorf("failed to index templates: %w", err)
 	}

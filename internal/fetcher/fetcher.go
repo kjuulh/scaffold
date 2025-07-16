@@ -32,19 +32,19 @@ var (
 	scaffoldCache    = path.Join(scaffoldFolder, "scaffold.updates.json")
 )
 
-func (f *Fetcher) Available(registryPath *string) bool {
+func (f *Fetcher) Available(registryPath *string) (string, bool) {
 	if *registryPath == "" {
-		if _, err := os.Stat(scaffoldClone); err != nil {
-			return false
+		if _, err := os.Stat(scaffoldRegistry); err != nil {
+			return "", false
 		}
 
-		*registryPath = scaffoldRegistry
+		// *registryPath = scaffoldRegistry
 
-		return true
+		return scaffoldRegistry, true
 
 	}
 
-	return false
+	return "", false
 }
 
 func (f *Fetcher) CloneRepository(ctx context.Context, registryPath *string, ui *slog.Logger) error {

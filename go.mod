@@ -7,6 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/charmbracelet/huh v0.6.0
 	github.com/charmbracelet/lipgloss v1.0.0
+	github.com/golang-cz/devslog v0.0.15
 	github.com/iancoleman/strcase v0.3.0
 	github.com/ktr0731/go-fuzzyfinder v0.8.0
 	github.com/spf13/cobra v1.8.1
