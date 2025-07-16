@@ -120,15 +120,33 @@ func (t *TemplateLoader) Load(ctx context.Context, template *Template) ([]File, 
 type TemplatedFile struct {
 	Content         []byte
 	DestinationPath string
+	Mode            TemplatedFileWriteMode
 }
+
+type TemplatedFileWriteMode string
+
+const (
+	TemplatedFileWriteModeFile   = "WRITE"
+	TemplatedFileWriteModeAppend = "APPEND"
+)
 
 // TemplateFiles runs the actual templating on the files, and tells it where to go. The writes doesn't happen here yet.
 func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffoldDest string) ([]TemplatedFile, error) {
 	templatedFiles := make([]TemplatedFile, 0)
 	for _, file := range files {
+		var writeMode TemplatedFileWriteMode = TemplatedFileWriteModeFile
+
 		tmpl, err := gotmpl.
 			New(file.RelPath).
 			Funcs(funcs).
+			Funcs(gotmpl.FuncMap{
+				"WriteModeFile": func() {
+					writeMode = TemplatedFileWriteModeFile
+				},
+				"WriteModeAppend": func() {
+					writeMode = TemplatedFileWriteModeAppend
+				},
+			}).
 			Parse(string(file.content))
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse template file: %s, %w", file.RelPath, err)
@@ -176,6 +194,8 @@ func (l *TemplateLoader) TemplateFiles(template *Template, files []File, scaffol
 		templatedFiles = append(templatedFiles, TemplatedFile{
 			Content:         output.Bytes(),
 			DestinationPath: path.Join(scaffoldDest, filePath),
+
+			Mode: writeMode,
 		})
 	}
 
