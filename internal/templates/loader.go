@@ -37,6 +37,11 @@ var funcs = gotmpl.FuncMap{
 	"ToLower":      strings.ToLower,
 	"ToUpper":      strings.ToUpper,
 	"ToPascalCase": strcase.ToCamel,
+	"ToCamelCase":  strcase.ToLowerCamel,
+	"ToSnakeCase":  strcase.ToSnake,
+	"ToCompressedCase": func(i string) string {
+		return strings.ReplaceAll(strcase.ToSnake(i), "_", "")
+	},
 }
 
 // TemplatePath formats the template file path using go templates, this is useful for programmatically changing the output string using go tmpls
