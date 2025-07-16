@@ -18,7 +18,9 @@ type Fetcher struct {
 }
 
 func NewFetcher(ignoreCache bool) *Fetcher {
-	return &Fetcher{}
+	return &Fetcher{
+		ignoreCache: ignoreCache,
+	}
 }
 
 const readWriteExec = 0o744
